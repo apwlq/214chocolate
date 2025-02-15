@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나는 발렌타인데이 초콜릿을 받을 수 있을까?</title>
+  <style>
+    /* 전체 페이지 스타일 */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f1f6;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      transition: background-color 0.5s ease;
+    }
+
+    /* 헤더 스타일 */
+    h1 {
+      font-size: 36px;
+      color: #8b5e83;
+      margin-bottom: 20px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    p {
+      font-size: 18px;
+      color: #9e7a88;
+      margin-bottom: 30px;
+      font-weight: 400;
+    }
+
+    /* 입력 박스 스타일 */
+    input[type="text"] {
+      padding: 12px 20px;
+      font-size: 18px;
+      border: 2px solid #8b5e83;
+      border-radius: 30px;
+      width: 300px;
+      margin-bottom: 20px;
+      background-color: #fff;
+      color: #8b5e83;
+      transition: 0.3s;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #d28a8c;
+      box-shadow: 0 0 5px rgba(210, 138, 140, 0.5);
+    }
+
+    /* 버튼 스타일 */
+    button {
+      font-size: 18px;
+      padding: 15px 40px;
+      cursor: pointer;
+      background-color: #d28a8c;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #9e6a68;
+      transform: scale(1.05);
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    /* 결과 문구 스타일 */
+    .result {
+      font-size: 24px;
+      margin-top: 30px;
+      font-weight: 500;
+      color: #8b5e83;
+      max-width: 90%;
+      text-align: center;
+      line-height: 1.5;
+      transition: opacity 0.5s ease;
+    }
+
+    /* 초콜릿 스타일 */
+    .chocolate {
+      display: inline-block;
+      width: 160px;
+      height: 60px;
+      background-color: #3e2723;
+      border-radius: 20px;
+      position: relative;
+      margin-top: 30px;
+      animation: chocolateAnimation 1s ease-in-out;
+    }
+
+    .chocolate::before {
+      content: "초콜릿";
+      font-size: 20px;
+      color: #fff;
+      font-weight: 600;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* 초콜릿 애니메이션 */
+    @keyframes chocolateAnimation {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .chocolate-wrapper {
+      display: none;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>나는 발렌타인데이 초콜릿을 받을 수 있을까?</h1>
+<p>운이 좋으면 초콜릿이 당첨됩니다!</p class="여친/남친 있으면 확율 늘어남">
+
+<input type="text" id="name" placeholder="이름을 입력하세요" />
+<button onclick="participate()">참여하기</button>
+
+<div id="result" class="result"></div>
+<div id="chocolate-wrapper" class="chocolate-wrapper">
+  <div class="chocolate"></div>
+</div>
+
+<script>
+  function participate() {
+    let name = document.getElementById("name").value;
+    if (!name) {
+      alert("이름을 입력해주세요!");
+      return;
+    }
+
+    // 랜덤 추첨 (0.0001% 확률로 초콜릿 당첨)
+    let chance = Math.random();
+    let resultText = "";
+    let chocolateWrapper = document.getElementById("chocolate-wrapper");
+
+    // 실패 문구 리스트와 각 문구의 확률 가중치
+    const failMessages = [
+  { message: "님, 아쉽지만 꽝입니다! 😢 다음 기회에 도전해보세요! 🙌", weight: 1 },
+  { message: "님, 이번에는 운이 없었네요! 😔 다시 시도해보세요! 🤞", weight: 1 },
+  { message: "님, 꽝입니다! 😞 다음 기회에 더 좋은 결과가 있길! 🍀", weight: 1 },
+  { message: "님, 운이 따르지 않았네요. 😓 다시 한 번 도전해보세요! 💪", weight: 1 },
+  { message: "님, 아쉽지만 이번엔 초콜릿이 없어요. 😣 계속 도전하세요! 💖", weight: 1 },
+  { message: "님, 운이 따르지 않네요! 😕 다시 한 번 도전해보세요! 🔄", weight: 1 },
+  { message: "님, 안타깝게도 꽝입니다. 😢 다음에 또 도전해보세요! 🌟", weight: 1 },
+  { message: "님, 이번엔 운이 따라주지 않았어요. 😩 그래도 다시 시도해보세요! 🏆", weight: 1 },
+  { message: "님, 이번에도 초콜릿은 없네요. 😔 더 좋은 기회가 오길 바래요! 💫", weight: 1 },
+  { message: "님, 아쉽지만 이번엔 초콜릿이 당첨되지 않았어요. 😕", weight: 1 },
+  { message: "님, 초콜릿은 이번엔 없네요. 😢 계속 도전하세요! 🏅", weight: 1 },
+  { message: "님, 꽝입니다! 😣 운이 따라주길 기도할게요. 🙏", weight: 1 },
+  { message: "님, 안타깝게도 꽝이네요! 😞 더 나은 기회를 찾아봐요! 🔍", weight: 1 },
+  { message: "님, 초콜릿이 당첨되지 않았습니다. 😔 하지만 포기하지 말아요! 💪", weight: 1 },
+  { message: "님, 초콜릿은 꽝이에요. 😣 그럼에도 다시 도전하세요! 🎯", weight: 1 },
+  { message: "님, 아쉽지만 초콜릿이 없어요. 😕 계속 도전하세요! 🔄", weight: 1 },
+  { message: "님, 꽝입니다! 😟 운이 다시 찾아오길 바랄게요! 🌈", weight: 1 },
+  { message: "님, 조금 더 기다리면 좋은 일이 생길 거예요! ⏳", weight: 1 },
+  { message: "님, 이번에는 초콜릿이 당첨되지 않았어요. 😞 다시 시도해보세요! 🌟", weight: 1 },
+  { message: "님, 아쉽지만 이번엔 꽝입니다! 😔 계속 도전해 보세요! ✨", weight: 1 },
+  { message: "님, 꽝입니다! 😣 초콜릿은 다음 기회에나 찾아올 거예요. ⏳", weight: 1 },
+  { message: "님, 안타깝게도 초콜릿이 없습니다. 😢 계속해서 도전하세요! 🎯", weight: 1 },
+  { message: "님, 운이 부족했나 봐요. 😓 계속 도전하세요! 💪", weight: 1 },
+  { message: "님, 꽝입니다! 😞 초콜릿은 다시 한번 도전해야 할 것 같아요. 🔁", weight: 1 },
+  { message: "님, 아쉽지만 초콜릿이 없네요. 😣 재도전을 위한 기회는 계속됩니다! 🔄", weight: 1 },
+  { message: "님, 이번엔 꽝이에요! 😔 하지만 포기하지 마세요. 💪", weight: 1 },
+  { message: "님, 초콜릿이 당첨되지 않았어요. 😢 그래도 희망을 잃지 마세요! 🌟", weight: 1 },
+  { message: "님, 운이 따르지 않았네요. 😕 그래도 다시 도전해주세요! 🔄", weight: 1 },
+  { message: "님, 이번에는 꽝입니다. 😔 하지만 다시 시도할 기회가 있으니 도전해 보세요! 🎯", weight: 1 },
+  { message: "님, 초콜릿은 없네요. 😞 다음엔 더 좋은 기회가 있을 거예요! 🌈", weight: 1 },
+  { message: "님, 아쉽지만 초콜릿이 없었어요. 😢 계속해서 도전하세요! 💪", weight: 1 },
+  { message: "님, 꽝입니다! 😣 하지만 도전은 계속되고 있어요! 🔄", weight: 1 },
+  { message: "님, 초콜릿은 꽝이에요. 😔 포기하지 않고 도전하는 모습 멋져요! ✨", weight: 1 },
+  { message: "님, 이번에는 운이 없었어요. 😞 그래도 계속 도전해주세요! 💪", weight: 1 },
+  { message: "님, 초콜릿은 없었어요. 😔 하지만 다음에는 반드시 당첨될 거예요! ✨", weight: 1 },
+  { message: "님, 운이 따르지 않았어요. 😣 그래도 계속해서 도전해주세요! 🔄", weight: 1 },
+  { message: "님, 아쉽지만 이번엔 초콜릿이 없네요. 😢 다시 한 번 도전하세요! 💪", weight: 1 },
+  { message: "님, 꽝입니다. 😔 하지만 포기하지 않고 계속 시도해보세요! 🔁", weight: 1 },
+  { message: "님, 이번에는 운이 없었네요. 😞 하지만 도전은 계속되고 있어요! 🌟", weight: 1 },
+  { message: "님, 초콜릿은 꽝입니다. 😔 다음에 더 좋은 기회가 올 거예요! ✨", weight: 1 },
+  { message: "님, 이번에도 초콜릿은 없어요. 😕 그래도 계속 도전하는 게 중요해요! 💖", weight: 1 },
+  { message: "님, 아쉽지만 초콜릿은 없어요. 😢 계속 도전할 때 언젠가는 좋은 일이 생길 거예요! ✨", weight: 1 },
+  { message: "님, 운이 따르지 않았어요. 😣 하지만 희망을 잃지 마세요! 🌟", weight: 1 },
+  { message: "님, 초콜릿이 없었어요. 😞 계속 도전하다 보면 언젠가는 당첨될 거예요! 🏅", weight: 1 },
+  { message: "님, 아쉽지만 초콜릿이 당첨되지 않았어요. 😔 계속 도전하세요! 🔄", weight: 1 },
+  { message: "님, 이번에도 꽝입니다! 😞 하지만 포기하지 않으면 언젠가는 좋은 기회가 올 거예요. 🌟", weight: 1 },
+  { message: "님, 초콜릿은 이번엔 없네요. 😕 계속 도전하세요! 💪", weight: 1 },
+  { message: "님, 아쉽지만 초콜릿이 없습니다. 😣 희망을 가지고 다시 시도해 보세요! 🌈", weight: 1 },
+  { message: "님, 꽝입니다. 😔 그래도 다시 시도하면 기회가 올 거예요! 🎯", weight: 1 },
+  { message: "님, 초콜릿이 없어요. 😢 하지만 당신의 도전은 계속될 거예요! 🔄", weight: 1 },
+  { message: "님, 운이 없었네요. 😞 그래도 계속 도전해보세요! 💪", weight: 1 },
+  { message: "님, 이번에도 꽝입니다. 😔 하지만 기회는 계속 오니 도전해 보세요! 🎯", weight: 1 },
+  { message: "님, 초콜릿은 없었어요. 😢 그래도 당신의 열정은 대단해요! 🌟", weight: 1 },
+  { message: "님, 이번에는 초콜릿이 없어요. 😔 계속 도전하면 언젠가는 당첨되겠죠? 🤞", weight: 1 },
+  { message: "님, 아쉽지만 초콜릿은 이번에도 없어요. 😞 그래도 포기하지 말아요! 💪", weight: 1 },
+  { message: "님, 운이 따라주지 않았어요. 😣 그래도 계속 도전할 수 있어요! 💖", weight: 1 },
+  { message: "님, 초콜릿이 없었어요. 😢 하지만 희망을 잃지 말고 도전하세요! 💪", weight: 1 },
+  { message: "님, 이번에도 초콜릿이 없어요. 😔 계속 도전하고, 다음에 좋은 일이 있을 거예요! ✨", weight: 1 },
+  { message: "님, 꽝입니다! 😣 하지만 계속해서 도전하는 모습 멋져요. 🔄", weight: 1 },
+  { message: "님, 이번에도 초콜릿이 없네요. 😞 계속 도전하고 믿음을 가져봐요! 💖", weight: 1 }
+];
+
+
+    // 실패 시 랜덤 메시지 선택 (확률에 맞게)
+    let randomFailMessage = getWeightedRandom(failMessages);
+
+    if (chance < 0.000001) {  // 0.0001% 확률로 성공
+      resultText = `축하합니다, ${name}님! 초콜릿이 당첨되었습니다!`;
+      chocolateWrapper.style.display = "block";  // 초콜릿 표시
+      document.getElementById("result").innerHTML = resultText;
+    } else {
+      resultText = `${name}${randomFailMessage}`;
+      chocolateWrapper.style.display = "none";  // 초콜릿 숨김
+      typeWriter(resultText); // 타이핑 효과 적용
+    }
+  }
+
+  // 타이핑 효과 함수
+  function typeWriter(text) {
+    let i = 0;
+    const resultElement = document.getElementById("result");
+    resultElement.innerHTML = ""; // 초기화
+
+    function typing() {
+      if (i < text.length) {
+        resultElement.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typing, 10); // 10ms마다 한 글자씩 추가
+      }
+    }
+    typing();
+  }
+
+  // 확률에 맞는 랜덤 문구 선택 함수
+  function getWeightedRandom(messages) {
+    const totalWeight = messages.reduce((sum, message) => sum + message.weight, 0);
+    let random = Math.random() * totalWeight;
+    for (let i = 0; i < messages.length; i++) {
+      random -= messages[i].weight;
+      if (random < 0) {
+        return messages[i].message;
+      }
+    }
+  }
+</script>
+
+</body>
+</html>
